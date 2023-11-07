@@ -62,8 +62,8 @@ if (date.getDate() === 0) {
     check(path(previous))
 }
 
-const yesterday = new Date(date.getTime() - 86400000)
-check(path(yesterday))
+const twoDaysAgo = new Date(date.getTime() - 172800000)
+check(path(twoDaysAgo))
 
 mysqldump({
     connection: {
