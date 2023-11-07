@@ -49,8 +49,8 @@ const check = (dest) => {
 	return existed;
 };
 
-if (date.getDate() === 0) {
-	const previousMonth = () => {
+const monthly = () => {
+    const previousMonth = () => {
 		const current = new Date(date);
 
 		if (current.getMonth() === 0) {
@@ -63,19 +63,33 @@ if (date.getDate() === 0) {
 	};
 	const previous = previousMonth();
 	check(path(previous));
-} else if (date.getDate() % 7 === 0) {
-	const previousWeek = () => {
+}
+const weekly = () => {
+    const previousWeek = () => {
 		const current = new Date(date);
 
 		current.setDate(current.getDate() - 7);
 		return current;
 	};
 	const previous = previousWeek();
+    if (previous.getDate() === 0) return;
 	check(path(previous));
 }
+const daily = () => {
+    const twoDaysAgo = new Date(date.getTime() - 172800000);
+    if (twoDaysAgo.getDate() === 0) return;
+    if (twoDaysAgo.getDate() % 7 === 0) return;
 
-const twoDaysAgo = new Date(date.getTime() - 172800000);
-check(path(twoDaysAgo));
+    check(path(twoDaysAgo));
+}
+
+if (date.getDate() === 0) {
+    monthly()
+} else if (date.getDate() % 7 === 0) {
+	weekly()
+} else {
+    daily()
+}
 
 mysqldump({
 	connection: {
